@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Segmentasi Pelanggan E-Commerce | K-Means vs K-Medoids</title>
+    
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="atelier/atelier.css">
+<link rel="stylesheet" href="atelier/theme.css">
+<script src="atelier/theme.js"></script>
+<script src="atelier/atelier.js"></script>
+</head>
+<body>
+<div class="sg-layout"><aside class="sg-toc" id="sg-toc" aria-label="Daftar isi"></aside><div class="container">
+<div class="jupyter-notebook-content">
+<div class="markdown-cell">
+  <h1>Segmentasi Pelanggan E-Commerce dengan CRISP-DM</h1>
+  <h3>K-Means vs K-Medoids</h3>
+  <p>Penelitian ini mengelompokkan <strong>17.706 transaksi nyata</strong> sebuah toko Shopee menjadi segmen yang bisa ditindaklanjuti, mengikuti kerangka <strong>CRISP-DM</strong>.</p>
+  <div class="sg-result">
+    <div><b>K = 3</b><span>Jumlah segmen terpilih</span></div>
+    <div><b>20 / 21</b><span>Perbandingan dimenangkan K-Means</span></div>
+    <div><b>7% &rarr; 29%</b><span>Porsi transaksi dan omzet segmen Grosir Premium</span></div>
+  </div>
+  <p><a class="sg-cta" href="dashboard.html">Buka dasbor interaktif</a></p>
+</div>
+
+<div class="markdown-cell">
+  <h2>Tahap 1 — Pemahaman Bisnis</h2>
+  <p><strong>Latar belakang.</strong> Sebuah toko e-commerce memiliki ribuan transaksi, tetapi belum mengenali tipe-tipe pelanggannya. Tanpa pengelompokan, semua pelanggan diperlakukan sama, sehingga strategi pemasaran kurang tepat sasaran.</p>
+  <p><strong>Tujuan.</strong> Mengelompokkan transaksi menjadi beberapa segmen berdasarkan <strong>pola pembelian</strong> dan <strong>lokasi geografis</strong>, agar tiap segmen dapat ditangani dengan strategi yang sesuai.</p>
+</div>
+
+<div class="markdown-cell">
+  <h2>Tahap 2 — Pemahaman Data</h2>
+  <p>Data sudah dibersihkan menjadi empat variabel. Data <strong>tidak memiliki ID pelanggan</strong>, sehingga setiap baris mewakili satu transaksi, bukan satu orang, dan segmentasi dilakukan pada tingkat transaksi.</p>
+</div>
+<div class="output-table"><table>
+  <thead><tr><th></th><th>Total Pembayaran</th><th>Jumlah Barang</th><th>Ongkos Kirim</th></tr></thead>
+  <tbody><tr><th>Simpangan baku</th><td>154.367</td><td>7,25</td><td>20.775</td></tr><tr><th>Minimum</th><td>165</td><td>1</td><td>1</td></tr><tr><th>Median</th><td>26.398</td><td>1</td><td>10.000</td></tr><tr><th>Maksimum</th><td>3.403.591</td><td>256</td><td>624.000</td></tr></tbody>
+</table></div>
+<figure class="sg-fig"><img src="img/cell05_1.png" alt="Sebaran asli ketiga variabel: sangat miring, sebagian besar nilainya kecil" loading="lazy"><figcaption>Sebaran asli ketiga variabel: sangat miring, sebagian besar nilainya kecil</figcaption></figure>
+
+<div class="markdown-cell">
+  <h2>Tahap 3 — Persiapan Data</h2>
+  <ol>
+    <li><strong>Transformasi log</strong> (<code>np.log1p</code>): meredam nilai ekstrem tanpa mengubah urutan besar-kecil data.</li>
+    <li><strong>Standardisasi</strong>: menyeragamkan skala agar tidak ada variabel yang mendominasi perhitungan jarak.</li>
+  </ol>
+</div>
+<div class="code-cell"><pre><code>X_log = np.log1p(df[fitur].values)        # langkah 1: log
+scaler = StandardScaler().fit(X_log)      # langkah 2: standardisasi
+X = scaler.transform(X_log)</code></pre></div>
+<figure class="sg-fig"><img src="img/cell09_2.png" alt="Sebaran setelah log dan standardisasi, jauh lebih seimbang" loading="lazy"><figcaption>Sebaran setelah log dan standardisasi, jauh lebih seimbang</figcaption></figure>
+
+<div class="markdown-cell">
+  <h2>Tahap 4 — Pemodelan</h2>
+  <p><strong>K-Means</strong> memakai rata-rata anggota sebagai pusat klaster, sedangkan <strong>K-Medoids</strong> memakai salah satu anggota nyata. K-Medoids ditulis manual dengan metode alternate. Jumlah klaster diuji untuk K = 2 sampai 8.</p>
+</div>
+<figure class="sg-fig"><img src="img/cell14_3.png" alt="Metode Elbow dan skor Silhouette: kurva WCSS menekuk di K = 3" loading="lazy"><figcaption>Metode Elbow dan skor Silhouette: kurva WCSS menekuk di K = 3</figcaption></figure>
+
+<div class="markdown-cell">
+  <h2>Tahap 5 — Evaluasi</h2>
+  <p>Tiga metrik dipakai supaya perbandingan tidak bergantung pada satu ukuran. RMSE memang sedikit berpihak pada K-Means karena rata-rata meminimalkan jarak kuadrat, sehingga Silhouette dan DBI yang netral dipakai sebagai penguat.</p>
+</div>
+<div class="output-table"><table>
+  <thead><tr><th>Metrik pada K = 3</th><th>K-Means</th><th>K-Medoids</th><th>Arah terbaik</th></tr></thead>
+  <tbody><tr><th>RMSE</th><td><b>1,144</b></td><td>1,253</td><td>Lebih kecil</td></tr><tr><th>Silhouette</th><td><b>0,404</b></td><td>0,232</td><td>Lebih besar</td></tr><tr><th>Davies-Bouldin</th><td><b>1,005</b></td><td>1,140</td><td>Lebih kecil</td></tr></tbody>
+</table></div>
+<figure class="sg-fig"><img src="img/cell18_4.png" alt="RMSE K-Means lebih kecil di setiap nilai K" loading="lazy"><figcaption>RMSE K-Means lebih kecil di setiap nilai K</figcaption></figure>
+<div class="output-table"><table>
+  <thead><tr><th>Segmen K-Means, K = 3</th><th>Transaksi</th><th>Porsi</th><th>Median belanja</th><th>Median barang</th><th>Median ongkir</th></tr></thead>
+  <tbody><tr><th>Pembeli Hemat</th><td>11.291</td><td>63,8%</td><td>18.900</td><td>1</td><td>8.000</td></tr><tr><th>Pembeli Reguler</th><td>5.180</td><td>29,3%</td><td>54.000</td><td>2</td><td>22.500</td></tr><tr><th>Pelanggan Grosir Premium</th><td>1.235</td><td>7,0%</td><td>128.764</td><td>8</td><td>34.000</td></tr></tbody>
+</table></div>
+<div class="markdown-cell">
+  <blockquote><strong>Kesimpulan.</strong> K-Means lebih baik daripada K-Medoids pada 20 dari 21 perbandingan metrik. K-Medoids tidak lebih unggul di sini karena nilai ekstrem sudah diredam oleh transformasi log dan standardisasi.</blockquote>
+</div>
+
+<div class="markdown-cell">
+  <h2>Tahap 6 — Penerapan</h2>
+  <p>Model K-Means diterapkan menjadi dasbor yang berjalan langsung di browser: profil segmen, omzet per segmen, sebaran provinsi, dan klasifikasi transaksi baru memakai pusat klaster serta parameter standardisasi dari model yang sama.</p>
+  <p><a class="sg-cta" href="dashboard.html">Buka dasbor interaktif</a></p>
+</div>
+<div class="markdown-cell">
+  <h2>Keterbatasan</h2>
+  <ul>
+    <li>Satuan analisis adalah transaksi, sehingga tidak bisa menyimpulkan perilaku satu pelanggan dari waktu ke waktu.</li>
+    <li>Silhouette 0,404 menunjukkan pemisahan klaster yang sedang, bukan sangat tegas.</li>
+    <li>Rekomendasi di dasbor belum diuji dengan eksperimen pemasaran.</li>
+  </ul>
+</div>
+</div>
+</div></div>
+</body>
+</html>

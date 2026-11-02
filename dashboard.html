@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dasbor Segmentasi Pelanggan E-Commerce</title>
+<meta name="description" content="Dasbor interaktif hasil segmentasi 17.706 transaksi e-commerce dengan K-Means, termasuk klasifikasi transaksi baru.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="atelier/atelier.css">
+<link rel="stylesheet" href="atelier/theme.css">
+<link rel="stylesheet" href="atelier/dashboard.css">
+<script src="atelier/theme.js"></script>
+<script src="atelier/atelier.js"></script>
+</head>
+<body>
+<header class="db-top">
+  <a href="index.html">&larr; Naskah penelitian</a>
+  <span>CRISP-DM tahap 6: penerapan</span>
+</header>
+
+<main class="db-main">
+  <p class="db-kick" data-at>Dasbor analitik</p>
+  <h1 data-at>Siapa yang membeli, dan <em>siapa yang menghasilkan</em>?</h1>
+
+  <section class="db-kpis" id="kpis" data-at aria-label="Ringkasan"></section>
+
+  <section class="db-card" data-at>
+    <h2>7% transaksi menyumbang 29% omzet</h2>
+    <p class="db-note">Perbandingan porsi jumlah transaksi dengan porsi omzet pada tiap segmen.</p>
+    <div class="db-legend" aria-hidden="true"><span><i class="k-a"></i>Porsi transaksi</span><span><i class="k-b"></i>Porsi omzet</span></div>
+    <div id="share" class="db-plot"></div>
+  </section>
+
+  <section class="db-segs" id="segs" data-at aria-label="Profil segmen"></section>
+
+  <div class="db-two">
+    <section class="db-card" data-at>
+      <h2>Sepuluh provinsi teratas</h2>
+      <p class="db-note">Jumlah transaksi, disusun per segmen. Pilih ukuran di bawah.</p>
+      <div class="db-toggle" role="group" aria-label="Pilih ukuran provinsi">
+        <button type="button" class="is-on" data-m="total">Jumlah</button>
+        <button type="button" data-m="persen">Komposisi %</button>
+      </div>
+      <div class="db-legend" id="leg1"></div>
+      <div id="prov" class="db-plot"></div>
+    </section>
+
+    <section class="db-card" data-at>
+      <h2>Peta transaksi</h2>
+      <p class="db-note">Sampel acak 1.200 transaksi. Nilai pembayaran dibulatkan ke kelompok skala logaritma, dan posisi titik diacak dalam kelompoknya.</p>
+      <div class="db-legend" id="leg2"></div>
+      <div id="scatter" class="db-plot"></div>
+    </section>
+  </div>
+
+  <section class="db-card db-try" id="coba" data-at>
+    <div>
+      <h2>Coba model: segmen transaksi baru</h2>
+      <p class="db-note">Model K-Means yang sama berjalan di browser: masukan diubah dengan log dan standardisasi, lalu dicari pusat klaster terdekat.</p>
+      <form id="form-coba" class="db-form">
+        <label>Total pembayaran (Rp)<input type="number" name="bayar" min="1" value="75000" required></label>
+        <label>Jumlah barang<input type="number" name="qty" min="1" value="3" required></label>
+        <label>Perkiraan ongkos kirim (Rp)<input type="number" name="ongkir" min="1" value="15000" required></label>
+      </form>
+    </div>
+    <output id="hasil" class="db-result" aria-live="polite"></output>
+  </section>
+
+  <section class="db-card" data-at>
+    <h2>Mengapa K-Means dipilih</h2>
+    <p class="db-note">K-Means menang pada 20 dari 21 perbandingan. Garis putus-putus menandai K = 3, jumlah segmen terpilih.</p>
+    <div class="db-legend" id="leg3"></div>
+    <div class="db-multi" id="eval"></div>
+  </section>
+
+  <section class="db-card" data-at>
+    <h2>Rekomendasi tindakan</h2>
+    <p class="db-note">Disusun dari profil di atas. Ini usulan untuk diuji, belum dibuktikan dengan eksperimen.</p>
+    <div class="db-rec" id="rec"></div>
+  </section>
+
+  <section class="db-card" data-at>
+    <details>
+      <summary>Lihat data sebagai tabel</summary>
+      <div id="tabel" class="db-tablewrap"></div>
+    </details>
+    <p class="db-note db-foot" id="catatan"></p>
+  </section>
+</main>
+<div class="db-tip" id="tip" role="status" hidden></div>
+<script src="data/segmen.js"></script>
+<script src="atelier/dashboard.js"></script>
+</body>
+</html>

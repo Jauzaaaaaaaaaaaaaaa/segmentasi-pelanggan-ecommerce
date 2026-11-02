@@ -1,0 +1,58 @@
+/* Dasbor segmentasi. Warna tervalidasi lewat validate_palette: #0088b0, #d9a21b, #e4572e. */
+:root { --s0: #0088b0; --s1: #d9a21b; --s2: #e4572e; --muted: #8b8f96; --grid: #e7e4da; --card: #fff; }
+.db-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 16px clamp(16px, 4vw, 44px); font-size: .84rem; color: var(--dm); }
+.db-top a { color: var(--ik) !important; }
+.db-kpi b { overflow-wrap: anywhere; }
+.db-tablewrap table { min-width: 640px; }
+.db-main { width: min(1240px, 100% - 2 * clamp(16px, 4vw, 44px)); margin-inline: auto; padding-block: clamp(14px, 4vh, 40px) 70px; display: grid; gap: 16px; }
+.db-main > * { min-width: 0; }
+.db-kick { margin: 0; font: 500 .74rem "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--dm); }
+.db-main h1 { margin: 0 0 8px; max-width: 18ch; font-size: clamp(2.5rem, 6.6vw, 5.4rem); }
+.db-main h1 em { color: var(--c1); }
+.db-main h2 { margin: 0; padding: 0; border: 0; font-size: clamp(1.45rem, 2.6vw, 2.1rem); line-height: 1.1; }
+.db-note { margin: 6px 0 12px; font-size: .88rem; color: var(--dm); max-width: 64ch; }
+.db-card { background: var(--card); box-shadow: inset 0 0 0 1px var(--hr); border-radius: 8px; padding: clamp(16px, 2.2vw, 26px); min-width: 0; }
+.db-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+.db-kpi { padding: 16px 18px; background: var(--card); box-shadow: inset 0 0 0 1px var(--hr); border-radius: 8px; }
+.db-kpi span { display: block; font-size: .78rem; color: var(--dm); }
+.db-kpi b { display: block; margin-top: 2px; font: 400 clamp(1.9rem, 3.4vw, 2.8rem)/1.08 "Instrument Serif", serif; font-variant-numeric: tabular-nums; }
+.db-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-bottom: 8px; font-size: .8rem; color: var(--dm); }
+.db-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.db-legend i { width: 11px; height: 11px; border-radius: 3px; }
+.k-a { background: #b6b2a5; } .k-b { background: #1a1d21; }
+.db-plot svg, .db-multi svg { display: block; width: 100%; height: auto; overflow: visible; }
+.db-plot text, .db-multi text { font: 400 12px "Inter", sans-serif; fill: var(--dm); }
+.db-plot .lbl, .db-multi .lbl { fill: var(--ik); font-weight: 500; }
+.db-grid { stroke: var(--grid); stroke-width: 1; }
+.db-segs { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; }
+.db-seg { position: relative; padding: 20px; background: var(--card); box-shadow: inset 0 0 0 1px var(--hr), inset 0 4px 0 var(--c); border-radius: 8px; }
+.db-seg h3 { margin: 0; font: 400 1.6rem/1.1 "Instrument Serif", serif; }
+.db-seg dl { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0 0; }
+.db-seg dt { font-size: .72rem; color: var(--dm); }
+.db-seg dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.db-two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 960px) { .db-two { grid-template-columns: 1fr; } }
+.db-toggle { display: inline-flex; gap: 2px; margin-bottom: 10px; padding: 2px; background: var(--pp); border-radius: 7px; }
+.db-toggle button { padding: 5px 11px; border: 0; border-radius: 5px; background: transparent; color: var(--dm); font: 500 .78rem "Inter", sans-serif; cursor: pointer; }
+.db-toggle button.is-on { background: #1a1d21; color: #fff; }
+.db-try { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(16px, 3vw, 36px); align-items: stretch; }
+@media (max-width: 800px) { .db-try { grid-template-columns: 1fr; } }
+.db-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.db-form label { display: grid; gap: 5px; font-size: .78rem; color: var(--dm); }
+.db-form input { width: 100%; box-sizing: border-box; min-height: 44px; padding: 8px 12px; border: 1px solid var(--hr); border-radius: 6px; background: var(--pp); color: var(--ik); font: 500 1rem "JetBrains Mono", monospace; }
+.db-form input:focus { outline: 2px solid #1a1d21; outline-offset: 1px; }
+.db-result { display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 20px; background: var(--pp); border-radius: 8px; box-shadow: inset 4px 0 0 var(--c, #1a1d21); }
+.db-result small { color: var(--dm); }
+.db-result b { font: 400 clamp(1.8rem, 3.4vw, 2.6rem)/1.08 "Instrument Serif", serif; }
+.db-multi { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.db-multi h3 { margin: 0 0 4px; font: 600 .86rem "Inter", sans-serif; }
+.db-multi h3 small { font-weight: 400; color: var(--dm); }
+.db-rec { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
+.db-rec article { padding-top: 10px; border-top: 3px solid var(--c); }
+.db-rec h3 { margin: 0 0 4px; font: 600 .92rem "Inter", sans-serif; }
+.db-rec p { margin: 0; font-size: .9rem; color: var(--dm); }
+details summary { cursor: pointer; font-weight: 500; }
+.db-tablewrap { overflow-x: auto; margin-top: 12px; }
+.db-tablewrap td:first-child, .db-tablewrap th:first-child { text-align: left; }
+.db-foot { margin: 12px 0 0; max-width: none; font-size: .78rem; }
+.db-tip { position: fixed; z-index: 80; max-width: 240px; padding: 8px 11px; border-radius: 6px; background: #1a1d21; color: #fff; font-size: .78rem; line-height: 1.4; pointer-events: none; }
