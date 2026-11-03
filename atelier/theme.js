@@ -26,14 +26,16 @@
         links.push([h, a]);
       });
       document.querySelectorAll('.code-cell, .output-table, .placeholder-image').forEach(function (e) { e.setAttribute('data-at', ''); });
-      if ('IntersectionObserver' in window) {
-        var io = new IntersectionObserver(function (es) {
-          es.forEach(function (en) {
-            if (!en.isIntersecting) return;
-            links.forEach(function (l) { l[1].classList.toggle('is-on', l[0] === en.target); });
-          });
-        }, { rootMargin: '-20% 0px -70% 0px' });
-        links.forEach(function (l) { io.observe(l[0]); });
+      /* Bagian aktif: judul terakhir yang sudah melewati sepertiga layar, jadi tetap benar saat melompat atau kembali ke atas */
+      function tandai() {
+        var batas = innerHeight * 0.35, aktif = links[0];
+        links.forEach(function (l) { if (l[0].getBoundingClientRect().top <= batas) aktif = l; });
+        links.forEach(function (l) { l[1].classList.toggle('is-on', l === aktif); });
+      }
+      if (links.length) {
+        addEventListener('scroll', tandai, { passive: true });
+        addEventListener('resize', tandai);
+        tandai();
       }
     }
   };
